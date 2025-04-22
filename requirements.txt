@@ -1,0 +1,4 @@
+fastapi~=0.111.0
+SQLAlchemy~=2.0.31
+DateTime~=5.5
+pydantic~=2.7.4
