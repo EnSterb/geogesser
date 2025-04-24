@@ -11,14 +11,14 @@ ACCESS_TOKEN = os.getenv('ACCESS_TOKEN')
 OUTPUT_FILE = "coordinates_image.csv"
 
 # Задай границы всей карты (например, Париж)
-MIN_LAT = 48.80
-MAX_LAT = 48.90
-MIN_LON = 2.25
-MAX_LON = 2.45
-STEP = 0.01  # Размер клетки (0.01 = ~1.1 км)
+MIN_LAT = -180
+MAX_LAT = 180
+MIN_LON = -180
+MAX_LON = 180
+STEP = 2  # Размер клетки (0.01 = ~1.1 км)
 
 FIELDS = "id,geometry"
-LIMIT = 2000
+LIMIT = 1
 
 
 def fetch_images(bbox):

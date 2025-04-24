@@ -50,3 +50,4 @@ CREATE TABLE if not exists room_rounds (
 );
 
 select count(*) row_count from locations;
+select * from locations;

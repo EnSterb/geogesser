@@ -1,7 +1,6 @@
 import pandas as pd
-from sqlalchemy.orm import Session
-from app.database import SessionLocal  # или как у тебя называется сессия
-from app.models import Location        # путь до модели
+from app.database import SessionLocal
+from app.models import Location
 
 # Загрузка CSV
 df = pd.read_csv("coordinates_image.csv", encoding="utf-8")
