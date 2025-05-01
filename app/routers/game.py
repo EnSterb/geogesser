@@ -17,7 +17,7 @@ router = APIRouter(
 
 # Маршрут для старта одиночной игры и получения случайных локаций
 @router.get("/locations", response_model=list[dict])
-def get_locations(num_locations: int = Query(3, ge=1, le=50), db: Session = Depends(get_db)):
+def get_locations(num_locations: int = Query(3, ge=1, le=50)):
     """
     Возвращает указанное количество локаций в формате JSON.
 
@@ -26,11 +26,17 @@ def get_locations(num_locations: int = Query(3, ge=1, le=50), db: Session = Depe
 
     Если в базе недостаточно локаций, вернётся ошибка 404.
     """
-    locations_result = []
-    for i in range(1, num_locations+1):
-        while True:
-            loc = get_location_json()
-            if loc not in locations_result:
-                locations_result.append(loc)
-                break
-    return locations_result
+    db = next(get_db())
+    try:
+        locations_result = []
+        for i in range(1, num_locations+1):
+            while True:
+                loc = get_location_json()
+                if loc not in locations_result:
+                    locations_result.append(loc)
+                    break
+        return locations_result
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    finally:
+        db.close()

@@ -1,5 +1,5 @@
 from sqlalchemy.orm import relationship, declarative_base, mapped_column, Mapped
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, Boolean, DateTime, BigInteger
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, Boolean, DateTime, BigInteger, text
 from datetime import datetime
 
 Base = declarative_base()
@@ -12,6 +12,8 @@ class User(Base):
     email: Mapped[str] = mapped_column(String(255), unique=True, index=True)
     hashed_password: Mapped[str] = mapped_column(String(255))
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+
+    password_reset_tokens = relationship("PasswordResetToken", back_populates="user")
 
 class Location(Base):
     __tablename__ = 'locations'
@@ -50,3 +52,25 @@ class RoomRound(Base):
 
     room: Mapped["Room"] = relationship(back_populates="rounds")
     location: Mapped["Location"] = relationship()
+
+class PasswordResetToken(Base):
+    __tablename__ = "password_tokens"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id_user"))
+    token: Mapped[str] = mapped_column(String(255), unique=True, index=True)
+    expires_at: Mapped[datetime] = mapped_column(DateTime)
+    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=text('CURRENT_TIMESTAMP'))
+
+    user = relationship("User", back_populates="password_reset_tokens")
+
+class TempUsers(Base):
+    __tablename__ = "temp_users"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    nickname: Mapped[str] = mapped_column(String(255), unique=True, index=True)
+    email: Mapped[str] = mapped_column(String(255), unique=True, index=True)
+    password_hash: Mapped[str] = mapped_column(String(255))
+    token: Mapped[str] = mapped_column(String(255), unique=True, index=True)
+    expires_at: Mapped[datetime] = mapped_column(DateTime)
+    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=text('CURRENT_TIMESTAMP'))

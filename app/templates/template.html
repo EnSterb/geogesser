@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Мой проект{% endblock %}</title>
-    <link rel="stylesheet" href="/static/css/test.css">
+    <link rel="stylesheet" href="/static/css/template.css">
     <script src="https://unpkg.com/mapillary-js@4.1.2/dist/mapillary.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     
@@ -16,21 +16,8 @@
      crossorigin=""/>
 </head>
 <body>
-    <header>
-        <h1>🌐 Мой FastAPI Проект</h1>
-        <nav>
-            <a href="/">Главная</a>
-            <a href="/about">О нас</a>
-        </nav>
-    </header>
 
-    <main>
-        {% block content %} <!-- Контент страницы -->
-        {% endblock %}
-    </main>
+{% block content %} <!-- Контент страницы -->{% endblock %}
 
-    <footer>
-        <p>© 2025 Все права защищены</p>
-    </footer>
 </body>
 </html>

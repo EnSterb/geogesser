@@ -7,3 +7,7 @@ tqdm~=4.66.5
 python-dotenv~=1.0.1
 pandas~=2.1.1
 geopy~=2.4.1
+jose~=1.0.0
+python-jose~=3.4.0
+passlib~=1.7.4
+fastapi[all]>=0.68.2
