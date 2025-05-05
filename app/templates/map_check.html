@@ -1,0 +1,18 @@
+{% extends "template.html" %}
+
+{% block title %}Mapillary Viewer{% endblock %}
+
+{% block content %}
+    <h2>Просмотр панорамной камеры Mapillary</h2>
+
+    <div id="mly" style="width: 400px; height: 300px;"></div>
+<script type="module">
+    var {Viewer} = mapillary;
+
+  var viewer = new Viewer({
+    accessToken: 'MLY|9331669426931121|871cc49d836ea4351fc78506d6ab68cf',
+    container: 'mly', // the ID of our container defined in the HTML body
+    imageId: '761827536069695',
+  });
+    </script>
+{% endblock %}

@@ -18,16 +18,33 @@ header {
 header .logo {
     font-size: 24px;
     font-weight: bold;
+    text-decoration: none;
+    color: white;
 }
 header .auth {
     display: flex;
     gap: 20px;
 }
 header .auth a {
-    color: white;
     text-decoration: none;
-    font-weight: bold;
+    background-color: white;
+    color: #007BFF;
+    padding: 10px 20px;
+    font-size: 20px;
+    border-radius: 10px;
+    transition: background-color 0.3s;
 }
+header .auth a:hover{
+    background-color: #cccccc;
+}
+header .auth a#sign-up-a{
+    background-color: #007BFF;
+    color: white;
+}
+header .auth a#sign-up-a:hover{
+    background-color: #0056b3;
+}
+
 main {
     flex: 1;
     display: flex;
@@ -51,4 +68,26 @@ main a.button {
 }
 main a.button:hover {
     background-color: #0056b3;
+}
+.notification-box {
+    background-color: #fff;
+    border: 2px solid #007BFF;
+    border-radius: 12px;
+    padding: 30px 40px;
+    max-width: 500px;
+    margin-top: 60px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-size: 18px;
+    line-height: 1.5;
+}
+.notification-box h2 {
+    color: #007BFF;
+    margin-bottom: 15px;
+}
+.error-message {
+    color: red;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 10px;
 }

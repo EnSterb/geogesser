@@ -1,0 +1,22 @@
+{% extends "template.html" %}
+
+{% block title %}Ошибка подтверждения{% endblock %}
+
+{% block content %}
+<main style="display: flex; justify-content: center; align-items: center; min-height: 80vh;">
+  <div class="auth-form" style="text-align: center; border: 2px solid red;">
+    <h2 style="color: red;">Ошибка подтверждения</h2>
+    <p>Возможно, ссылка устарела или уже была использована.</p>
+    <a href="/pages/sign-up" style="
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 20px;
+      background-color: #dc3545;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    ">Зарегистрироваться снова</a>
+  </div>
+</main>
+{% endblock %}

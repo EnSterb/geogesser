@@ -18,13 +18,11 @@ def create_temp_user(
     db: Session
 ) -> str:
     try:
-        # Удаляем старые записи для этого email
         db.execute(
             delete(TempUsers)
             .where(TempUsers.email == email)
         )
 
-        # Создаем новую временную запись
         token = secrets.token_urlsafe(32)
         expires_at = datetime.utcnow() + timedelta(minutes=30)
 

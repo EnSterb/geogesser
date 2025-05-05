@@ -1,6 +1,8 @@
 from fastapi import APIRouter
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
+from sqlalchemy.testing import db
+
 from app.database import get_db
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
@@ -12,7 +14,7 @@ router = APIRouter(
     prefix='/pages',
 )
 
-async def redirect_if_not_authenticated(request: Request, db: Session, redirect_to: str = "/pages/template"):
+async def redirect_if_not_authenticated(request: Request, db: Session, redirect_to: str = "/pages/sign-in"):
     user = get_user_from_cookie(request, db)
     if user is None:
         return RedirectResponse(redirect_to, status_code=302)
@@ -24,19 +26,42 @@ async def read_root(request: Request, db: Session = Depends(get_db)):
     user = await redirect_if_not_authenticated(request, db)
     if isinstance(user, RedirectResponse):
         return user
-    return templates.TemplateResponse("hub.html", {"request": request, "title": "Camera"})
+    return templates.TemplateResponse("hub.html", {
+        "request": request,
+        "user": user
+    })
 
 @router.get("/map", response_class=HTMLResponse)
 async def read_root(request: Request):
-    return templates.TemplateResponse("map.html", {"request": request, "title": "MAP"})
+    user = await redirect_if_not_authenticated(request, db)
+    if isinstance(user, RedirectResponse):
+        return user
+    return templates.TemplateResponse("map.html", {
+        "request": request,
+        "user": user,
+    })
 
 @router.get("/menu", response_class=HTMLResponse)
-async def read_root(request: Request):
-    return templates.TemplateResponse("menu.html", {"request": request, "title": "test"})
+async def read_root(request: Request, db: Session = Depends(get_db)):
+    user = await redirect_if_not_authenticated(request, db)
+    if isinstance(user, RedirectResponse):
+        return templates.TemplateResponse("menu.html", {
+        "request": request
+    })
+    return templates.TemplateResponse("menu.html", {
+        "request": request,
+        "user": user
+    })
 
 @router.get("/single_game", response_class=HTMLResponse)
-async def read_root(request: Request):
-    return templates.TemplateResponse("single_game.html", {"request": request, "title": "test"})
+async def read_root(request: Request, db: Session = Depends(get_db)):
+    user = await redirect_if_not_authenticated(request, db)
+    if isinstance(user, RedirectResponse):
+        return user
+    return templates.TemplateResponse("single_game.html", {
+        "request": request,
+        "user": user
+    })
 
 @router.get("/template", response_class=HTMLResponse)
 def index(request: Request, db: Session = Depends(get_db)):
@@ -50,6 +75,28 @@ def index(request: Request, db: Session = Depends(get_db)):
 async def signup(request: Request, db: Session = Depends(get_db)):
     user = await redirect_if_not_authenticated(request, db)
     if not isinstance(user, RedirectResponse):
-        return RedirectResponse("/pages/template", status_code=302)
+        return templates.TemplateResponse("menu.html", {
+        "request": request,
+        "user": user
+    })
     return templates.TemplateResponse("sign-up.html", {"request": request})
 
+@router.get("/email-sent", response_class=HTMLResponse)
+async def email_sent_page(request: Request, db:Session = Depends(get_db)):
+    user = await redirect_if_not_authenticated(request, db)
+    if not isinstance(user, RedirectResponse):
+        return templates.TemplateResponse("menu.html", {
+            "request": request,
+            "user": user
+        })
+    return templates.TemplateResponse("email-sent.html", {"request": request})
+
+@router.get("/sign-in", response_class=HTMLResponse)
+async def signup(request: Request, db: Session = Depends(get_db)):
+    user = await redirect_if_not_authenticated(request, db)
+    if not isinstance(user, RedirectResponse):
+        return templates.TemplateResponse("menu.html", {
+            "request": request,
+            "user": user
+        })
+    return templates.TemplateResponse("sign-in.html", {"request": request})

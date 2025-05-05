@@ -5,11 +5,12 @@ from fastapi.templating import Jinja2Templates
 from dotenv import load_dotenv
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm, HTTPAuthorizationCredentials, HTTPBearer
 from fastapi import Depends, HTTPException, APIRouter, status, Body
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from jose import JWTError, jwt
 from fastapi import Request
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+from fastapi.responses import HTMLResponse
 
 from app.database import get_db
 from app.email_verification import send_verification_email, create_temp_user, verify_token_and_register
@@ -24,6 +25,7 @@ ALGORITHM = os.getenv("ALGORITHM")
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+templates = Jinja2Templates(directory="app/templates")
 
 router = APIRouter(
     prefix="/auth",
@@ -49,6 +51,17 @@ def register_user(nickname: str, email: str, password: str, db: Session):
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Nickname already taken"
             )
+        if db.query(TempUsers).filter(TempUsers.email == email).first():
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Check your email and try again"
+            )
+        if db.query(TempUsers).filter(TempUsers.nickname == nickname).first():
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Nickname already taken"
+            )
+
 
         if len(password) < 8:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Password must be at least 8 characters")
@@ -69,14 +82,16 @@ def register_user(nickname: str, email: str, password: str, db: Session):
         )
 
 
-@router.get("/verify_email")
-def verify_email(token: str, db: Session = Depends(get_db)):
-    if verify_token_and_register(token, db):
-        return {"message": "Email successfully verified and account created"}
-    raise HTTPException(
-        status_code=status.HTTP_400_BAD_REQUEST,
-        detail="Invalid or expired token"
-    )
+@router.get("/verify_email", response_class=HTMLResponse)
+async def verify_email(request: Request, token: str, db: Session = Depends(get_db)):
+    try:
+        if verify_token_and_register(token, db):
+            return templates.TemplateResponse("complete-signup.html", {"request": request})
+    except HTTPException as e:
+        return templates.TemplateResponse("error-email.html", {
+            "request": request,
+            "error_message": e.detail
+        })
 
 
 @router.post('/register/', response_model=dict)
@@ -160,12 +175,6 @@ def read_profile(current_user: User = Depends(get_current_user), token: str = De
         'email': current_user.email,
         'access_token': token
     }
-
-templates = Jinja2Templates(directory="app/templates")
-
-@router.get("/register_page")
-async def register_page(request: Request):
-    return templates.TemplateResponse("register_page.html", {"request": request, "title": "register page"})
 
 def get_user_from_cookie(request: Request, db: Session):
     token = request.cookies.get("access_token")

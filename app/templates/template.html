@@ -19,13 +19,14 @@
 </head>
 <body>
     <header>
-    <div class="logo">GEOGESSER</div>
+    <a class="logo" href="/pages/menu">GEOGESSER</a>
     <div class="auth">
     {% if user %}
-        <a class="button" href="/play">Играть</a>
+        <a class="button" id="hub-a" href="/pages/hub">Хаб</a>
+        <a class="button" id="soloplay-a" href="#">Играть в соло</a>
     {% else %}
-        <a class="button" href="/signup">Sign Up</a>
-        <a class="button" href="/signin">Sign In</a>
+        <a class="button" id="sign-up-a" href="/pages/sign-up">Sign Up</a>
+        <a class="button" id="sign-in-a" href="/pages/sign-in">Sign In</a>
     {% endif %}
 </div>
   </header>

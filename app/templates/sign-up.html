@@ -11,8 +11,11 @@
     <input type="email" name="email" placeholder="Email" required>
     <input type="password" name="password" placeholder="Пароль" required>
 
+    <div id="error-message" class="error-message" style="display: none; color: red; margin-bottom: 10px;"></div>
+
     <button type="submit">Зарегистрироваться</button>
-    <p>Уже есть аккаунт? <a href="/auth/sign-in">Войти</a></p>
+    <p>Уже есть аккаунт? <a href="/pages/sign-in">Войти</a></p>
   </form>
 </main>
+<script type="module" src="/static/js/sign-up.js"></script>
 {% endblock %}
