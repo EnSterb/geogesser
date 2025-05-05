@@ -1,7 +1,11 @@
 from typing import Optional
 import requests
+from fastapi import HTTPException, Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from geopy.distance import geodesic
+from jose import jwt, JWTError
 from passlib.context import CryptContext
+from requests import Request
 
 from app.database import get_location
 import random

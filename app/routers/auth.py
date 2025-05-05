@@ -1,11 +1,13 @@
 import os
 from datetime import datetime, timedelta
 from typing import Optional
-
+from fastapi.templating import Jinja2Templates
 from dotenv import load_dotenv
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm, HTTPAuthorizationCredentials, HTTPBearer
 from fastapi import Depends, HTTPException, APIRouter, status, Body
+from fastapi.responses import JSONResponse
 from jose import JWTError, jwt
+from fastapi import Request
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -101,16 +103,8 @@ def decode_access_token(token: str):
     except JWTError:
         return None
 
-@router.post(
-    "/login",
-    response_model=Token,
-    summary="User login",
-    description="Authenticate user with email and password",
-    responses={
-        200: {"description": "Successfully authenticated"},
-        401: {"description": "Incorrect email or password"}
-    }
-)
+
+@router.post("/login")
 def login(
     user_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db)
@@ -126,7 +120,17 @@ def login(
         data={"sub": str(user.id_user)},
         expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     )
-    return {"access_token": access_token, "token_type": "bearer"}
+
+    response = JSONResponse(content={"message": "Login successful"})
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        httponly=True,
+        max_age=ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+        secure=False,  # Поставь True на проде с HTTPS
+        samesite="lax"
+    )
+    return response
 
 security = HTTPBearer()
 
@@ -156,3 +160,25 @@ def read_profile(current_user: User = Depends(get_current_user), token: str = De
         'email': current_user.email,
         'access_token': token
     }
+
+templates = Jinja2Templates(directory="app/templates")
+
+@router.get("/register_page")
+async def register_page(request: Request):
+    return templates.TemplateResponse("register_page.html", {"request": request, "title": "register page"})
+
+def get_user_from_cookie(request: Request, db: Session):
+    token = request.cookies.get("access_token")
+    if not token:
+        # print("❌ Нет токена в cookies")
+        return None
+
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        user_id = int(payload.get("sub"))
+    except (JWTError, ValueError):
+        return None
+
+    stmt = select(User).where(User.id_user == user_id)
+    user = db.execute(stmt).scalar()
+    return user

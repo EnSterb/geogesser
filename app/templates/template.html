@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>{% block title %}Мой проект{% endblock %}</title>
     <link rel="stylesheet" href="/static/css/template.css">
+    <link rel="stylesheet" href="/static/css/auth.css">
+
     <script src="https://unpkg.com/mapillary-js@4.1.2/dist/mapillary.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     
@@ -16,8 +18,21 @@
      crossorigin=""/>
 </head>
 <body>
-
+    <header>
+    <div class="logo">GEOGESSER</div>
+    <div class="auth">
+    {% if user %}
+        <a class="button" href="/play">Играть</a>
+    {% else %}
+        <a class="button" href="/signup">Sign Up</a>
+        <a class="button" href="/signin">Sign In</a>
+    {% endif %}
+</div>
+  </header>
 {% block content %} <!-- Контент страницы -->{% endblock %}
 
+
+<footer>
+</footer>
 </body>
 </html>

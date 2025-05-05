@@ -1,76 +1,12 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <title>GEOGESSER</title>
-  <style>
-  body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-}
+{% extends "template.html" %}
 
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 40px;
-    background-color: #222;
-    color: white;
-}
-header .logo {
-    font-size: 24px;
-    font-weight: bold;
-}
-header .auth {
-    display: flex;
-    gap: 20px;
-}
-header .auth a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-}
-main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-main h1 {
-    font-size: 72px;
-    margin-bottom: 40px;
-}
-main a.button {
-    text-decoration: none;
-    background-color: #007BFF;
-    color: white;
-    padding: 15px 30px;
-    font-size: 20px;
-    border-radius: 10px;
-    transition: background-color 0.3s;
-}
-main a.button:hover {
-    background-color: #0056b3;
-}
-  </style>
-</head>
-<body>
-  <header>
-    <div class="logo">GEOGESSER</div>
-    <div class="auth">
-      <a href="#">Sign In</a>
-      <a href="#">Sign Up</a>
-    </div>
-  </header>
+{% block title %}Menu{% endblock %}
+
+{% block content %}
+
   <main>
     <h1>GEOGESSER</h1>
     <a class="button" href="#">Играть</a>
   </main>
-</body>
-</html>
+
+{% endblock %}
