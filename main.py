@@ -7,7 +7,6 @@ from fastapi.staticfiles import StaticFiles
 from app.routers.auth import router as auth_router
 from app.routers.pages import router as pages_router
 app = FastAPI(
-    prefix='geogesser',
     title='Geogesser',
     version='0.1.1',
 )
