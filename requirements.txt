@@ -12,3 +12,4 @@ passlib==1.7.4
 alembic==1.14.0
 pandas==2.1.1
 tqdm==4.66.5
+pymysql==1.1.1
