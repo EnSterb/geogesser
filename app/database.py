@@ -1,3 +1,4 @@
+import os
 from typing import Optional
 
 from sqlalchemy import create_engine, select
@@ -7,7 +8,7 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 from app.models import Location
 
-SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:123123123@localhost:3306/geogesser"
+SQLALCHEMY_DATABASE_URL = os.getenv('DATABASE_URL')
 
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={})
