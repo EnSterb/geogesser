@@ -2,6 +2,7 @@ drop database if exists geogesser;
 create database if not exists geogesser;
 use geogesser;
 
+
 drop table if exists locations;
 create table if not exists locations(
     id_location int primary key auto_increment,

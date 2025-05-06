@@ -35,11 +35,20 @@ async def read_root(request: Request, db: Session = Depends(get_db)):
     })
 
 @router.get("/map", response_class=HTMLResponse)
-async def read_root(request: Request):
+async def read_root(request: Request, db: Session = Depends(get_db)):
     user = await redirect_if_not_authenticated(request, db)
     if isinstance(user, RedirectResponse):
         return user
     return templates.TemplateResponse("map.html", {
+        "request": request,
+        "user": user,
+    })
+@router.get("/map-check", response_class=HTMLResponse)
+async def read_root(request: Request, db: Session = Depends(get_db)):
+    user = await redirect_if_not_authenticated(request, db)
+    if isinstance(user, RedirectResponse):
+        return user
+    return templates.TemplateResponse("map_check.html", {
         "request": request,
         "user": user,
     })
@@ -119,15 +128,26 @@ def show_room_page(
     current_user = get_user_from_cookie(request, db)
     if current_user is None:
         return RedirectResponse("/pages/sign-in", status_code=302)
-    room = db.query(SoloRoom).filter(SoloRoom.id_solo_room == room_id, SoloRoom.id_user == current_user.id_user).first()
+
+    room = db.query(SoloRoom).filter(
+        SoloRoom.id_solo_room == room_id,
+        SoloRoom.id_user == current_user.id_user
+    ).first()
+
     if not room:
         raise HTTPException(status_code=404, detail="Room not found")
 
-    rounds = db.query(SoloRound).filter(SoloRound.id_solo_room == room.id_solo_room).all()
+    rounds = db.query(SoloRound).filter(
+        SoloRound.id_solo_room == room.id_solo_room
+    ).order_by(SoloRound.round_number).all()
+
+    # Найти текущий раунд по номеру
+    current_round = next((r for r in rounds if r.round_number == room.current_round_number), None)
 
     return templates.TemplateResponse("room-page.html", {
         "request": request,
         "room": room,
         "rounds": rounds,
+        "current_round": current_round,
         "user": current_user
     })

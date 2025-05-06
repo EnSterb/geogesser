@@ -1,4 +1,5 @@
 # app/game.py
+import math
 import os
 
 import httpx
@@ -6,6 +7,7 @@ from dotenv import load_dotenv
 from fastapi import APIRouter, HTTPException, Query, Depends
 from fastapi.security import HTTPBearer, OAuth2PasswordBearer
 from jose import jwt, JWTError
+from pydantic import BaseModel
 from sqlalchemy import JSON, select
 from app.models import Location, User, Room, RoomRound, SoloRoom, SoloRound
 from app.routers.auth import oauth2_scheme
@@ -84,7 +86,7 @@ def create_solo_room(
 
     chosen_ids = random.sample(location_ids, data.rounds)
 
-    room = SoloRoom(id_user=current_user.id_user)
+    room = SoloRoom(id_user=current_user.id_user, total_rounds = data.rounds)
     db.add(room)
     db.commit()
     db.refresh(room)
@@ -123,4 +125,68 @@ def get_room_by_id(id_solo_room: int, db: Session = Depends(get_db)):
         ]
     }
 
+def haversine(lat1, lon1, lat2, lon2):
+    # Расстояние между двумя координатами (в метрах)
+    R = 6371000
+    phi1 = math.radians(lat1)
+    phi2 = math.radians(lat2)
+    dphi = math.radians(lat2 - lat1)
+    dlambda = math.radians(lon2 - lon1)
+    a = math.sin(dphi/2)**2 + math.cos(phi1) * math.cos(phi2) * math.sin(dlambda/2)**2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    return R * c
 
+class EndRoundRequest(BaseModel):
+    room_id: int
+    guessed_lat: float
+    guessed_lng: float
+
+
+@router.post("/single-game/end-round")
+def end_round(data: EndRoundRequest, db: Session = Depends(get_db)):
+    room = db.query(SoloRoom).filter(SoloRoom.id_solo_room == data.room_id).first()
+
+    if not room:
+        raise HTTPException(status_code=404, detail="Room not found")
+
+    # Проверка, что пользователь имеет доступ к комнате
+    current_user = db.query(User).filter(User.id_user == room.id_user).first()
+    if current_user.id_user != db.execute(select(SoloRoom.id_user).where(SoloRoom.id_solo_room == data.room_id)).scalar():
+        raise HTTPException(status_code=403, detail="You do not have access to this room")
+
+    current_round_number = room.current_round_number
+    round = db.query(SoloRound).filter_by(id_solo_room=room.id_solo_room, round_number=current_round_number).first()
+
+    if not round:
+        raise HTTPException(status_code=404, detail="Round not found")
+
+    location = round.location
+    distance = haversine(location.latitude, location.longitude, data.guessed_lat, data.guessed_lng)
+
+    # Вычисляем очки — чем ближе, тем выше (например, максимум 5000 за 0 м)
+    score = max(0, int(5000 - (distance / 100)))  # 1 очко на 100 м
+
+    # Добавим очки пользователю
+    user = db.query(User).filter(User.id_user == room.id_user).first()
+    user.solo_score += score
+    room.total_score += score
+    # Переход к следующему раунду
+    if current_round_number == room.total_rounds:
+        # Если это последний раунд, удаляем все раунды, комнату и пользователя
+        db.query(SoloRound).filter(SoloRound.id_solo_room == room.id_solo_room).delete()
+        db.delete(room)
+        db.commit()
+    if current_round_number != room.total_rounds:
+        room.current_round_number += 1
+        db.commit()
+    left_rounds = room.total_rounds-current_round_number
+    return {
+        "left_rounds": left_rounds,
+        "score": score,
+        "distance": distance,
+        "location": {
+            "lat": location.latitude,
+            "lng": location.longitude
+        },
+        "total_score": room.total_score if left_rounds == 0 else None
+    }

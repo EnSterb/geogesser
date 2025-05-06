@@ -96,8 +96,15 @@ class SoloRoom(Base):
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
     is_finished: Mapped[bool] = mapped_column(default=False)
 
-    rounds = relationship("SoloRound", back_populates="room")
+    current_round_number: Mapped[int] = mapped_column(default=1)
 
+    rounds = relationship(
+        "SoloRound",
+        back_populates="room",
+        order_by="SoloRound.round_number"
+    )
+    total_rounds = Column(Integer, default=3)
+    total_score = Column(Integer, default=0, nullable=False)
 
 class SoloRound(Base):
     __tablename__ = 'solo_rounds'
@@ -106,5 +113,5 @@ class SoloRound(Base):
     id_solo_room: Mapped[int] = mapped_column(ForeignKey("solo_rooms.id_solo_room"))
     round_number: Mapped[int]
     id_location: Mapped[int] = mapped_column(ForeignKey("locations.id_location"))
-
+    location = relationship("Location")
     room = relationship("SoloRoom", back_populates="rounds")

@@ -1,10 +1,15 @@
 body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f4f4f4;
+    background-image: url("../images/back.jpg");
+    background-attachment:inherit;
+    background-repeat: inherit;
+    background-size: cover;
+      /*background: #380150;*/
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+    width: 100%;
 }
 
 header {
@@ -56,6 +61,7 @@ main {
 main h1 {
     font-size: 72px;
     margin-bottom: 40px;
+    color: white;
 }
 main a.button {
     text-decoration: none;

@@ -1,0 +1,88 @@
+#mly {
+    position: relative;
+    flex: 1;
+    width: 100%;
+    height: calc(100vh - 80px); /* 80px = высота header'а */
+    overflow: hidden;
+  }
+
+  #mly .round-box {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: white;
+    color: black;
+    padding: 15px 25px;
+    border-radius: 12px;
+    font-size: 18px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+  }
+
+#mly #map {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 32%; /* 25% * 1.5 */
+  height: 35%; /* 20% * 1.75 */
+  border-radius: 12px;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease; /* Добавляем плавное увеличение */
+}
+
+#mly #map:hover {
+  width: 45%; /* Увеличиваем до 45% ширины */
+  height: 50%; /* Увеличиваем до 50% высоты */
+}
+
+  #mly .button {
+      font-size: 18px;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    padding: 20px 40px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 1000;
+  }
+  #mly .button:hover {
+    background-color: #43a347;
+  }
+#game-controls {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.score-box {
+  background-color: #f0f8ff;
+  color: #333;
+  font-size: 18px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.action-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #007BFF;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.action-button:hover {
+  background-color: #0056b3;
+}

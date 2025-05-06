@@ -1,8 +1,21 @@
 {% extends "template.html" %}
 
-{% block title %}Single Room{% endblock %}
-
 {% block content %}
+  <div id="mly"
+     data-image-id="{{ current_round.location.id_image }}"
+     data-lat="{{ current_round.location.latitude }}"
+     data-lng="{{ current_round.location.longitude }}">
+    <!-- Раунд -->
+    <div class="round-box">
+  Раунд {{ current_round.round_number }} из {{ room.rounds|length }}
+    </div>
 
+    <!-- Маленькая карта -->
+    <div id="map"></div>
 
+    <!-- Кнопка -->
+    <button class="button" id="end-round-btn">Подтвердить выбор</button>
+  </div>
+
+    <script type="module" src="/static/js/room-game.js"></script>
 {% endblock %}
