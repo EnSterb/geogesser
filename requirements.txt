@@ -13,3 +13,5 @@ alembic==1.14.0
 pandas==2.1.1
 tqdm==4.66.5
 pymysql==1.1.1
+numpy==1.26.4
+pandas==2.2.2
