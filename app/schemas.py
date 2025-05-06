@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from typing import Optional, Literal
 from datetime import datetime
 
@@ -105,3 +105,6 @@ class RoomRoundPublic(BaseModel):
 
     class Config:
         from_attributes = True
+
+class SoloRoomCreate(BaseModel):
+    rounds: int = Field(..., ge=1, le=20)

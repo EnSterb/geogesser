@@ -1,12 +1,15 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
+from sqlalchemy.sql.functions import current_user
 from sqlalchemy.testing import db
 
 from app.database import get_db
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from fastapi import Request, Depends
+
+from app.models import User, GameRoom, SoloRoom, SoloRound
 from app.routers.auth import get_user_from_cookie
 
 router = APIRouter(
@@ -53,13 +56,19 @@ async def read_root(request: Request, db: Session = Depends(get_db)):
         "user": user
     })
 
-@router.get("/single_game", response_class=HTMLResponse)
-async def read_root(request: Request, db: Session = Depends(get_db)):
+@router.get("/single-game", response_class=HTMLResponse)
+async   def single_player_page(request: Request, db: Session = Depends(get_db)):
     user = await redirect_if_not_authenticated(request, db)
     if isinstance(user, RedirectResponse):
         return user
-    return templates.TemplateResponse("single_game.html", {
+    user_rooms = []
+    if user:
+        user_rooms = db.query(SoloRoom).filter(SoloRoom.id_user == user.id_user).order_by(
+            SoloRoom.created_at.desc()).all()
+    # print(user.id_user, user_rooms)
+    return templates.TemplateResponse("single-game.html", {
         "request": request,
+        "rooms": user_rooms,
         "user": user
     })
 
@@ -100,3 +109,25 @@ async def signup(request: Request, db: Session = Depends(get_db)):
             "user": user
         })
     return templates.TemplateResponse("sign-in.html", {"request": request})
+
+@router.get("/single-room/{room_id}", response_model=None)
+def show_room_page(
+    room_id: int,
+    request: Request,
+    db: Session = Depends(get_db),
+):
+    current_user = get_user_from_cookie(request, db)
+    if current_user is None:
+        return RedirectResponse("/pages/sign-in", status_code=302)
+    room = db.query(SoloRoom).filter(SoloRoom.id_solo_room == room_id, SoloRoom.id_user == current_user.id_user).first()
+    if not room:
+        raise HTTPException(status_code=404, detail="Room not found")
+
+    rounds = db.query(SoloRound).filter(SoloRound.id_solo_room == room.id_solo_room).all()
+
+    return templates.TemplateResponse("room-page.html", {
+        "request": request,
+        "room": room,
+        "rounds": rounds,
+        "user": current_user
+    })

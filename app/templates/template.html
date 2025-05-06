@@ -5,7 +5,8 @@
     <title>{% block title %}Мой проект{% endblock %}</title>
     <link rel="stylesheet" href="/static/css/template.css">
     <link rel="stylesheet" href="/static/css/auth.css">
-
+    <link rel="stylesheet" href="/static/css/rounds-modal.css">
+    <link rel="stylesheet" href="/static/css/room-list.css">
     <script src="https://unpkg.com/mapillary-js@4.1.2/dist/mapillary.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     
@@ -23,7 +24,7 @@
     <div class="auth">
     {% if user %}
         <a class="button" id="hub-a" href="/pages/hub">Хаб</a>
-        <a class="button" id="soloplay-a" href="#">Играть в соло</a>
+        <a class="button" id="soloplay-a" href="/pages/single-game">Играть в соло</a>
     {% else %}
         <a class="button" id="sign-up-a" href="/pages/sign-up">Sign Up</a>
         <a class="button" id="sign-in-a" href="/pages/sign-in">Sign In</a>

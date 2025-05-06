@@ -1,0 +1,43 @@
+{% extends "template.html" %}
+
+{% block title %}Одиночная игра{% endblock %}
+
+{% block content %}
+<main class="single-game-page">
+  <div class="auth-form">
+    <h2>Одиночная игра</h2>
+
+    <button id="create-game-btn">Создать игру</button>
+    <div id="create-room-modal" class="modal" style="display:none;">
+      <div class="modal-content">
+        <h2>Создание комнаты</h2>
+        <form id="create-room-form">
+          <label for="rounds">Количество раундов:</label>
+          <input type="number" id="rounds" name="rounds" min="1" max="20" required>
+          <div class="modal-buttons">
+            <button type="submit">Создать</button>
+            <button type="button" id="close-modal-btn">Отмена</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    {% if rooms and rooms|length > 0 %}
+      <div class="room-list">
+        <h3 style="margin-top: 18px;">Ваши игры</h3>
+        <ul>
+          {% for room in rooms %}
+            <li>
+              <!-- Изменяем ссылку на id_solo_room -->
+              <a href="/pages/single-room/{{ room.id_solo_room }}">
+                Игра {{ loop.index }} — создана {{ room.created_at.strftime("%d.%m.%Y %H:%M") }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+  </div>
+</main>
+<script type="module" src="/static/js/rounds-modal.js"></script>
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "template.html" %}
+
+{% block title %}Лобби — GeoGuessr{% endblock %}
+
+{% block content %}
+<main style="display: flex; justify-content: center; align-items: center; min-height: 80vh;">
+  <div class="auth-form" style="text-align: center;">
+    <h2>Выберите режим</h2>
+    <p>На данный момент доступна только игра для одного игрока.</p>
+
+    <a href="/pages/single-game" style="
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 20px;
+      background-color: #28a745;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 18px;
+      transition: background-color 0.3s;
+    ">Играть в одиночку</a>
+  </div>
+</main>
+{% endblock %}
