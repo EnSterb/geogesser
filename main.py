@@ -47,11 +47,9 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 templates = Jinja2Templates(directory="app/templates")
 
 
-
-@app.get("/db")
-async def get_():
-    db = get_db()
-    return db
+@app.get("/")
+def read_root():
+    return {"Hello": "World"}
 
 if __name__ == "__main__":
     import uvicorn

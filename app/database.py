@@ -7,6 +7,8 @@ from app.models import Base, User
 from fastapi import Depends
 from sqlalchemy.orm import Session
 from app.models import Location
+from dotenv import load_dotenv
+load_dotenv()
 
 SQLALCHEMY_DATABASE_URL = os.getenv('DATABASE_URL')
 
