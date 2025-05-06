@@ -2,6 +2,11 @@
 __pycache__/
 *.py[cod]
 *$py.class
+coordinates.csv
+coordinates_image.csv
+coord_download.py
+image_with_coordinates.py
+
 
 # C extensions
 *.so
