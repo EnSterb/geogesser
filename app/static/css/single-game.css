@@ -86,3 +86,49 @@
 .action-button:hover {
   background-color: #0056b3;
 }
+@media (max-width: 768px) {
+  #mly .round-box {
+    top: 10px;
+    left: 10px;
+    font-size: 14px;
+    padding: 8px 14px;
+  }
+
+  #mly #map {
+    width: 80%;
+    height: 150px;
+    bottom: 80px;
+    right: 50%;
+    transform: translateX(50%);
+  }
+
+  #mly #map:hover {
+    width: 85%;
+    height: 180px;
+  }
+
+  #mly .button {
+    font-size: 16px;
+    padding: 12px 24px;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  #game-controls {
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .score-box {
+    font-size: 16px;
+  }
+
+  .action-button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+}

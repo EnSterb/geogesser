@@ -50,3 +50,28 @@
     color: #007BFF;
     text-decoration: none;
 }
+@media (max-width: 480px) {
+  .auth-form {
+    padding: 20px;
+    gap: 16px;
+    margin-top: 40px;
+  }
+
+  .auth-form h2 {
+    font-size: 24px;
+  }
+
+  .auth-form input {
+    font-size: 15px;
+    padding: 10px;
+  }
+
+  .auth-form button {
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  .auth-form p {
+    font-size: 13px;
+  }
+}

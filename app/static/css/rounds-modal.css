@@ -35,3 +35,19 @@
   border-radius: 8px;
   cursor: pointer;
 }
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 20px;
+  }
+
+  .modal-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .create-room-btn {
+    width: 100%;
+    font-size: 15px;
+    padding: 10px 0;
+  }
+}

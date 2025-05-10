@@ -123,3 +123,37 @@ main a.button:hover {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+@media (max-width: 600px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  header .logo {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
+  .auth-form {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .button, .action-button {
+    font-size: 16px;
+    padding: 10px 14px;
+  }
+
+  .round-box {
+    font-size: 14px;
+  }
+
+  #map {
+    height: 200px;
+  }
+
+  .notification-box {
+    font-size: 16px;
+    padding: 20px;
+  }
+}
