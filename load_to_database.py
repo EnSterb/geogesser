@@ -6,7 +6,7 @@ from app.models import Location
 df = pd.read_csv("coordinates_image.csv", encoding="utf-8")
 
 # Создаём сессию
-session = SessionLocal()
+# session = SessionLocal()
 
 locations = [
     Location(id_image=row.id_image, latitude=row.latitude, longitude=row.longitude)
@@ -14,9 +14,9 @@ locations = [
 ]
 
 # Добавляем в базу
-session.add_all(locations)
-session.commit()
+# session.add_all(locations)
+# session.commit()
 
 # Закрываем сессию
-session.close()
+# session.close()
 # print(df.head())

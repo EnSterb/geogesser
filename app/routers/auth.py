@@ -7,7 +7,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm, HT
 from fastapi import Depends, HTTPException, APIRouter, status, Body
 from fastapi.responses import JSONResponse, RedirectResponse
 from jose import JWTError, jwt
-from fastapi import Request
+from fastapi import Request, Response
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from fastapi.responses import HTMLResponse
@@ -191,3 +191,9 @@ def get_user_from_cookie(request: Request, db: Session):
     stmt = select(User).where(User.id_user == user_id)
     user = db.execute(stmt).scalar()
     return user
+
+@router.get("/logout")
+def logout():
+    response = RedirectResponse(url="/", status_code=302)
+    response.delete_cookie("access_token")
+    return response
