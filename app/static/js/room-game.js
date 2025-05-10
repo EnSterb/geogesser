@@ -40,6 +40,8 @@ const ROOM_ID = parseInt(pathParts[pathParts.length - 1]);
 // });
 
 document.querySelector("#end-round-btn").addEventListener("click", function() {
+  const overlay = document.getElementById("loading-overlay");
+  overlay.style.display = "flex"; // показать затемнение и спиннер
 
   fetch("/game/single-game/end-round", {
     method: "POST",
@@ -54,6 +56,7 @@ document.querySelector("#end-round-btn").addEventListener("click", function() {
   })
   .then(res => res.json())
   .then(data => {
+    overlay.style.display = "none"; // скрыть при успешном ответе
     // Увеличить карту
     document.querySelector("#map").style.width = "80%";
     document.querySelector("#map").style.height = "80%";
@@ -115,6 +118,7 @@ document.body.appendChild(controls);
 
   })
   .catch(error => {
+      overlay.style.display = "none";
     console.error("Ошибка при завершении раунда:", error);
   });
 });

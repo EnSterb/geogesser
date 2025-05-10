@@ -5,16 +5,16 @@
 {% block content %}
 <main>
   <form action="/auth/register/" method="post" class="auth-form">
-    <h2>Регистрация</h2>
+    <h2>Sign Up</h2>
 
-    <input type="text" name="nickname" placeholder="Никнейм" required>
+    <input type="text" name="nickname" placeholder="Nickname" required>
     <input type="email" name="email" placeholder="Email" required>
-    <input type="password" name="password" placeholder="Пароль" required>
+    <input type="password" name="password" placeholder="Password" required>
 
     <div id="error-message" class="error-message" style="display: none; color: red; margin-bottom: 10px;"></div>
 
-    <button type="submit">Зарегистрироваться</button>
-    <p>Уже есть аккаунт? <a href="/pages/sign-in">Войти</a></p>
+    <button type="submit">Register</button>
+    <p>Already have an account? <a href="/pages/sign-in">Sign In</a></p>
   </form>
 </main>
 <script type="module" src="/static/js/sign-up.js"></script>

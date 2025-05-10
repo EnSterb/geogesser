@@ -17,9 +17,15 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.style.display = "none";
   });
 
+  const overlay = document.getElementById("loading-overlay");
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const rounds = form.rounds.value;
+
+    // показать лоадер
+    form.style.display ="none";
+    overlay.style.display = "flex";
 
     try {
       const res = await fetch("/game/create-solo-room", {
@@ -37,6 +43,8 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (err) {
       console.error(err);
       alert("Ошибка соединения");
+    } finally {
+      overlay.style.display = "none"; // спрятать лоадер если ошибка
     }
   });
 });

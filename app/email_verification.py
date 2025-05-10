@@ -49,13 +49,13 @@ def create_temp_user(
 def send_verification_email(email: str, token: str):
     verification_url = f"{os.getenv('BASE_URL')}/auth/verify_email?token={token}"
 
-    subject = "Подтверждение регистрации"
+    subject = "Registration Confirmation"
     body = f"""
-    Добро пожаловать!
-    Пожалуйста, подтвердите ваш email, перейдя по ссылке:
+    Welcome!
+    Please confirm your email by clicking the link below:
     {verification_url}
 
-    Ссылка действительна 30 минут.
+    The link is valid for 30 minutes.
     """
 
     send_email(

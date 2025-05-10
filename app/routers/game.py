@@ -141,6 +141,13 @@ class EndRoundRequest(BaseModel):
     guessed_lat: float
     guessed_lng: float
 
+def calculate_score(distance_meters):
+    """
+    Мягкий спад очков при увеличении расстояния.
+    """
+    distance_km = distance_meters / 1000
+    score = 5000 * math.exp(-distance_km / 15)  # Меньше спад
+    return int(score)
 
 @router.post("/single-game/end-round")
 def end_round(data: EndRoundRequest, db: Session = Depends(get_db)):
@@ -164,7 +171,7 @@ def end_round(data: EndRoundRequest, db: Session = Depends(get_db)):
     distance = haversine(location.latitude, location.longitude, data.guessed_lat, data.guessed_lng)
 
     # Вычисляем очки — чем ближе, тем выше (например, максимум 5000 за 0 м)
-    score = max(0, int(5000 - (distance / 100)))  # 1 очко на 100 м
+    score = calculate_score(distance_meters=distance)
 
     # Добавим очки пользователю
     user = db.query(User).filter(User.id_user == room.id_user).first()

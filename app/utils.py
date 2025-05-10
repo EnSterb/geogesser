@@ -16,10 +16,31 @@ load_dotenv(dotenv_path='.env')
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+from math import radians, sin, cos, sqrt, atan2
+
 def calculate_distance(lat1, lon1, lat2, lon2):
-    point1 = (lat1, lon1)
-    point2 = (lat2, lon2)
-    return geodesic(point1, point2).kilometers
+    """
+    Вычисляет расстояние между двумя точками по координатам.
+    Вход: широты и долготы двух точек.
+    Возвращает расстояние в километрах.
+    """
+    R = 6371  # Радиус Земли в километрах
+
+    # Преобразование градусов в радианы
+    lat1_rad, lon1_rad = radians(lat1), radians(lon1)
+    lat2_rad, lon2_rad = radians(lat2), radians(lon2)
+
+    # Разница координат
+    dlat = lat2_rad - lat1_rad
+    dlon = lon2_rad - lon1_rad
+
+    # Формула гаверсинуса
+    a = sin(dlat / 2)**2 + cos(lat1_rad) * cos(lat2_rad) * sin(dlon / 2)**2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+    distance = R * c
+    return distance
+
 
 # distance = calculate_distance(55.7558, 37.6173, 59.9343, 30.3351)
 # print(f"Расстояние: {distance:.2f} км")
