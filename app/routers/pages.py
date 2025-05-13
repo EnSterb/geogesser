@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import RedirectResponse
+from sqlalchemy import desc, select
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.functions import current_user
 from sqlalchemy.testing import db
@@ -150,4 +151,26 @@ def show_room_page(
         "rounds": rounds,
         "current_round": current_round,
         "user": current_user
+    })
+@router.get("/leaderboard", response_class=HTMLResponse)
+async def read_leaderboard(request: Request, db: Session = Depends(get_db)):
+    user = await redirect_if_not_authenticated(request, db)
+    if isinstance(user, RedirectResponse):
+        return templates.TemplateResponse("menu.html", {"request": request})
+
+    # Берем только топ-50
+    users_query = select(User.nickname, User.solo_score).order_by(desc(User.solo_score)).limit(50)
+    result = db.execute(users_query).all()
+    ranked_users = [(nickname, score) for nickname, score in result]
+
+    # Находим ранг пользователя среди всех (если хочешь искать только в топ-50 — убери этот блок)
+    full_query = select(User.nickname, User.solo_score).order_by(desc(User.solo_score))
+    full_result = db.execute(full_query).all()
+    user_rank = next((i + 1 for i, (nickname, _) in enumerate(full_result) if nickname == user.nickname), None)
+
+    return templates.TemplateResponse("leaderboards.html", {
+        "request": request,
+        "user": user,
+        "users": ranked_users,
+        "user_rank": user_rank
     })
