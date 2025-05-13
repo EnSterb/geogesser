@@ -1,0 +1,87 @@
+{% extends "template.html" %}
+
+{% block title %}Leaderboard{% endblock %}
+
+{% block content %}
+<main class="leaderboard-page">
+  <div class="auth-form">
+    <h2>Leaderboard</h2>
+
+    <div class="user-rank-info">
+      <strong>Your Rank:</strong> {{ user_rank }} — {{ user.nickname }} ({{ user.solo_score }})
+    </div>
+
+    <div class="table-container">
+      <table class="leaderboard-table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Nickname</th>
+            <th>Solo Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for nickname, solo_score in users %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ nickname }}</td>
+            <td>{{ solo_score }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <form action="/pages/single-game" method="get" style="margin-top: 20px;">
+      <button type="submit">Back to Solo Game</button>
+    </form>
+  </div>
+</main>
+
+<style>
+  .leaderboard-page {
+    max-width: 800px;
+    margin: auto;
+  }
+
+  .user-rank-info {
+    margin-bottom: 20px;
+    font-size: 1.1em;
+  }
+
+  .table-container {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .leaderboard-table th,
+  .leaderboard-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .leaderboard-table thead th {
+    position: sticky;
+    top: 0;
+    background: #f5f5f5;
+    z-index: 1;
+  }
+
+  .leaderboard-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  .leaderboard-table tr:hover {
+    background-color: #e9f5ff;
+  }
+</style>
+
+{% endblock %}
