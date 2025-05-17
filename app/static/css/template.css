@@ -123,37 +123,60 @@ main a.button:hover {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+  body {
+    padding: 0 10px;
+  }
+
   header {
+    padding: 15px 20px;
     flex-direction: column;
     align-items: flex-start;
+    gap: 10px;
   }
 
-  header .logo {
-    font-size: 22px;
-    margin-bottom: 10px;
-  }
-
-  .auth-form {
-    width: 100%;
-    padding: 10px;
-  }
-
-  .button, .action-button {
-    font-size: 16px;
-    padding: 10px 14px;
-  }
-
-  .round-box {
-    font-size: 14px;
-  }
-
-  #map {
-    height: 200px;
+  main h1 {
+    font-size: 40px;
   }
 
   .notification-box {
-    font-size: 16px;
     padding: 20px;
+    font-size: 16px;
+  }
+
+  .auth-form {
+    margin-top: 30px;
+  }
+
+  .auth-form h2 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-form, .modal-content {
+    padding: 15px;
+    max-width: 100%;
+  }
+
+  .auth-form input,
+  .auth-form button,
+  .create-room-btn {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .room-list a {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  header .auth a {
+    font-size: 16px;
+    padding: 8px 12px;
+  }
+
+  main h1 {
+    font-size: 32px;
   }
 }

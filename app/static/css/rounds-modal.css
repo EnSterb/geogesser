@@ -51,3 +51,8 @@
     padding: 10px 0;
   }
 }
+@media (max-width: 480px) {
+  .modal-content {
+    border-radius: 8px;
+  }
+}
