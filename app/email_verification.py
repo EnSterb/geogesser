@@ -50,12 +50,15 @@ def send_verification_email(email: str, token: str):
     verification_url = f"{os.getenv('BASE_URL')}/auth/verify_email?token={token}"
 
     subject = "Registration Confirmation"
-    body = f"""
-    Welcome!
-    Please confirm your email by clicking the link below:
-    {verification_url}
-
-    The link is valid for 30 minutes.
+    html_body = f"""
+    <html>
+        <body>
+            <p>Welcome!</p>
+            <p>Please confirm your email by clicking the link below:</p>
+            <p><a href="{verification_url}">For confirm registration click here</a></p>
+            <p>The link is valid for 30 minutes.</p>
+        </body>
+    </html>
     """
 
     send_email(
@@ -63,7 +66,8 @@ def send_verification_email(email: str, token: str):
         email_password=os.getenv("GMAILPASSWORD"),
         email_to=email,
         subject=subject,
-        body=body
+        body=html_body,
+        is_html=True
     )
 
 

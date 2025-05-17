@@ -1,57 +1,59 @@
 #mly {
-    position: relative;
-    flex: 1;
-    width: 100%;
-    height: calc(100vh - 80px); /* 80px = высота header'а */
-    overflow: hidden;
-  }
+  position: relative;
+  flex: 1;
+  width: 100%;
+  height: calc(100vh - 80px); /* 80px = высота header'а */
+  overflow: hidden;
+}
 
-  #mly .round-box {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    background: white;
-    color: black;
-    padding: 15px 25px;
-    border-radius: 12px;
-    font-size: 18px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    z-index: 1000;
-  }
+#mly .round-box {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: white;
+  color: black;
+  padding: 15px 25px;
+  border-radius: 12px;
+  font-size: 18px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+}
 
 #mly #map {
   position: absolute;
   bottom: 20px;
   right: 20px;
-  width: 32%; /* 25% * 1.5 */
-  height: 35%; /* 20% * 1.75 */
+  width: 32%;
+  height: 35%;
   border-radius: 12px;
   z-index: 1000;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease; /* Добавляем плавное увеличение */
+  transition: all 0.3s ease;
 }
 
 #mly #map:hover {
-  width: 45%; /* Увеличиваем до 45% ширины */
-  height: 50%; /* Увеличиваем до 50% высоты */
+  width: 45%;
+  height: 50%;
 }
 
-  #mly .button {
-      font-size: 18px;
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    padding: 20px 40px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    z-index: 1000;
-  }
-  #mly .button:hover {
-    background-color: #43a347;
-  }
+#mly .button {
+  font-size: 18px;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  padding: 20px 40px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+#mly .button:hover {
+  background-color: #43a347;
+}
+
 #game-controls {
   position: absolute;
   bottom: 20px;
@@ -86,49 +88,53 @@
 .action-button:hover {
   background-color: #0056b3;
 }
+
+/* 🌐 Адаптивность для мобильных устройств */
 @media (max-width: 768px) {
   #mly .round-box {
     top: 10px;
     left: 10px;
     font-size: 14px;
-    padding: 8px 14px;
+    padding: 10px 15px;
   }
 
   #mly #map {
-    width: 80%;
-    height: 150px;
-    bottom: 80px;
+    width: 90vw;
+    height: 40vh;
     right: 50%;
     transform: translateX(50%);
+    bottom: 80px;
   }
 
   #mly #map:hover {
-    width: 85%;
-    height: 180px;
+    width: 90vw;
+    height: 50vh;
   }
 
   #mly .button {
     font-size: 16px;
-    padding: 12px 24px;
-    bottom: 20px;
+    padding: 14px 30px;
     left: 50%;
     transform: translateX(-50%);
+    bottom: 20px;
   }
 
   #game-controls {
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    gap: 8px;
+    flex-wrap: wrap;
   }
 
   .score-box {
-    font-size: 16px;
+    font-size: 14px;
+    padding: 8px 12px;
   }
 
   .action-button {
     font-size: 14px;
-    padding: 8px 16px;
+    padding: 8px 14px;
   }
 }
