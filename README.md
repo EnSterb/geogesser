@@ -1,2 +1,4 @@
 # geogesser
-Курсовая
+
+Открытый аналог игры Geoguesser
+Python, FastApi + MySQL
